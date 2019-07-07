@@ -8,12 +8,8 @@ from dash.dependencies import Input, Output, State
 import pandas as pd
 host = socket.gethostbyname(socket.gethostname())
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
-conn = psycopg2.connect("host=,dbname=ls user=postgres password=")
+conn = psycopg2.connect(host= "",dbname= "ls", user= "postgres", password="***")
 cur = conn.cursor()
-q=pd.read_csv('q.csv')
-rt = pd.read_csv('rt.csv')
-a = pd.read_csv('ans.csv')
-popul = pd.read_csv('popul.csv')
 
 def load_data(query):
 
@@ -43,7 +39,6 @@ app.layout = html.Div([
         ]),
     html.Div([
         html.Div([
-            #dcc.Input(id='input-1-state', type='text', value='Montréal'),
 
             #html.Div(id='output')
 
@@ -65,30 +60,30 @@ app.layout = html.Div([
 
         html.Div([
             html.Button(id='submit-button', n_clicks=0, children='Submit'),
-            html.Div(id='output-state')
+            #html.Div(id='output-state')
         ], className="four columns"),
     ], className="row"),
     html.Div([
         html.Div([
             html.H4('Number of questions'),
--- INSERT --                                                                                                                62,5          41%
-            dcc.Graph(id='g1', figure={'data': [{'x': q['create_date'],'y': q['count']}],'layout':{ 'xaxis':{ 'title':'Days' }, 'yaxis':{ 'title':'Number of Questions' } }})
+
+            dcc.Graph(id='g1')
         ], className="six columns"),
 
         html.Div([
-            html.H4('Response Time in Hours'),
-            dcc.Graph(id='g2', figure={'data': [{'x': rt['create_date'],'y': rt['rt_hours']}],'layout':{ 'xaxis':{ 'title':'Days' }, 'yaxis':{ 'title':'Response Time (In Hours)'} } })
+            html.H4('Response Time in Days'),
+            dcc.Graph(id='g2')
         ], className="six columns"),
     ], className="row"),
     html.Div([
         html.Div([
-            html.H4('Number of Questions which have Received Accepted Answers'),
-            dcc.Graph(id='g3', figure={'data': [{'x': a['create_date'],'y': a['count']}],'layout':{ 'xaxis':{ 'title':'Days' }, 'yaxis':{ 'title':'Questions with Accepted Answers' } }})
+            html.H4('Proportion of Questions which have Received Accepted Answers'),
+            dcc.Graph(id='g3')
         ], className="six columns"),
 
         html.Div([
-            html.H4('Credibility of Page <PageRank>'),
-            dcc.Graph(id='g4', figure={'data': [{'x': popul['create_date'],'y': popul['popularity']}],'layout':{ 'xaxis':{ 'title':'Days' }, 'yaxis':{ 'title':'Credibility' } }})
+            html.H4('Credibility of Associated Pages'),
+            dcc.Graph(id='g4')
         ], className="six columns"),
     ], className="row")
 
@@ -101,16 +96,29 @@ app.css.append_css({
 #@app.callback(Output('output-state', 'children'),
 #              [Input('submit-button', 'n_clicks')],
 #              [State('input-1-state', 'value')])
-@app.callback(Output('output-state', 'children'),
+@app.callback([Output('g1','figure'),
+               Output('g2','figure'),
+               Output('g3','figure'),
+               Output('g4','figure')],
               [Input('submit-button', 'n_clicks')],
               [State('input-1-state', 'value'),
                State('input-2-state', 'value')])
-def update_output(n_clicks, input1, input2):
-    return u'''
-        The Button has been pressed {} times,
-        Input 1 is "{}",
-        and Input 2 is "{}"
-    '''.format(n_clicks, input1, input2)
+def update_figure(n_clicks, input1, input2):
+    
+    query1 = "SELECT COUNT(*) AS num_ques,date_trunc('month',create_date) AS q_month FROM qtable WHERE tags @> '{" + str(input2)  +"}'::varchar[] AND community='" + str(input1) +"' GROUP BY q_month ORDER BY q_month;"
+    query_output1 = load_data(query1)
+
+    query2 = "SELECT  AVG(CAST(duration/14400 as decimal)) AS dur_days ,date_trunc('month',create_date) AS q_month FROM qtable WHERE tags @> '{" + str(input2)  +"}'::varchar[] AND community='" + str(input1) +"'AND duration > 0 GROUP BY q_month ORDER BY q_month;"
+    query_output2 = load_data(query2)
+
+    query3 = "SELECT cast(cast(COUNT(duration) as decimal) / COUNT(*)*100 as integer) AS prop,date_trunc('month',create_date) AS q_month  FROM qtable WHERE tags @> '{" + str(input2)  + "}'::varchar[] AND community='" + str(input1) +"' GROUP BY q_month ORDER BY q_month;"
+    query_output3 = load_data(query3)
+
+
+    query4 = "SELECT tags,popularity,create_date FROM credtab WHERE tags @> '{" + str(input2)  + "}'::varchar[] AND COMMUNITY='" + str(input1) + "' ORDER BY create_date;"
+    query_output4 = load_data(query4)
+
+    return [{'data': [{'x': query_output1['q_month'],'y': query_output1['num_ques']}],'layout': { 'xaxis':{ 'title':'Days' }, 'yaxis':{ 'title':'Number of Questions' } }},{'data': [{'x': query_output2['q_month'],'y': query_output2['dur_days']}],'layout': { 'xaxis':{ 'title':'Days' }, 'yaxis':{ 'title':'Response Time in Days' }} }, {'data': [{'x': query_output3['q_month'],'y': query_output3['prop']}],'layout': { 'xaxis':{ 'title':'Days' }, 'yaxis':{ 'title':'Proportion of Questions With Accepted Answers' }} },{'data': [{'x': query_output4['create_date'],'y': query_output4['popularity']}],'layout': { 'xaxis':{ 'title':'Days' }, 'yaxis':{ 'title':'Popularity of Page' }} } ]
 
 #def update_output(n_clicks, input1):
 #    return u'''
@@ -119,4 +127,4 @@ def update_output(n_clicks, input1, input2):
 #        and Input 2 is ""
 #    '''.format(n_clicks, input1)
 if __name__ == '__main__':
-    app.run_server(debug=True,host=host,port=8081)
+    app.run_server(debug=True,host=host,port=8080)
