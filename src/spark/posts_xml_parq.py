@@ -68,6 +68,6 @@ clean_name_df_subset_id = clean_name_df_subset.withColumn("iid", monotonically_i
 
 
 community_posts = posts_udf_id.join(clean_name_df_subset_id, posts_udf_id.iid == clean_name_df_subset_id.iid).drop("iid")
-community_posts.write.parquet("s3a://xmlparq/posts.parquet")
+community_posts.write.parquet("s3a://parquetoutputse/posts.parquet")
 
 spark.catalog.clearCache()
