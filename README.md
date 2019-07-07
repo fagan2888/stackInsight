@@ -16,3 +16,5 @@ For a given online community and a set of tags entered by a user, the dashboard 
 2. The average response time of the answers to the questions over time.
 3. The proportion of questions which have received an acceptable answer over time
 4. The page rank of the question pages and how it varies over time
+
+![diagram](fig/db.png)
