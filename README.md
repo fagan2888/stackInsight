@@ -5,7 +5,7 @@ The stackexchange network has over 170 QnA communites dedicated to answering que
 """
 
 ## Pipeline
-![diagram](pipeline.png)
+![diagram](fig/pipeline.png)
 
 ## DataSet
 StackExchange data dump from the online internet archive [Link](https://archive.org/download/stackexchange) 
