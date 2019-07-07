@@ -32,6 +32,7 @@ def file_names_retrieve():
   
 xml_files = file_names_retrieve()
 #for xml_file
+parquet_files = ["s3a://xmlsefiles/" + posts_parquet_file for posts_parquet_file in posts_parquet_files ]
 posts_udf = spark.read.text(xml_files).where(col('value').like('%<row Id%')) \
                  .select(udf(parse_line, MapType(StringType(), StringType()))('value').alias('value')) \
                  .select(col('value.Id').cast('integer'),
