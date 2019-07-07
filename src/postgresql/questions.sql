@@ -1,7 +1,10 @@
-CREATE TABLE questions (
- id serial primary key,
- qid integer,
- tags VARCHAR(500) [],
- duration numeric(10,3),
- community varchar(200).
- pr_score numeric(10,2));
+CREATE TABLE QUESTIONS (
+
+ QUESTION_ID SERIAL PRIMARY KEY,
+ QID INTEGER,
+ COMMUNITY varchar (100) NOT NULL,
+ TAGS VARCHAR(500) [],
+ CREATE_DATE TIMESTAMP,
+ DURATION NUMERIC(10,2),
+ PR_SCORE NUMERIC(10,3)
+);
