@@ -38,7 +38,7 @@ cmd_posts_pr = "ssh ubuntu@ip-10-0-0-13 /usr/local/spark/bin/spark-submit \
    --master spark://ip-10-0-0-13:7077 \
    --deploy-mode cluster \
    --executor-memory 20G \
-   --driver-memory 8G
+   --driver-memory 8G \
    --total-executor-cores 6 \
    --jars postgresql-9.4.1207.jar,aws-java-sdk-1.7.4.jar,hadoop-aws-2.7.3.jar \
    /home/ubuntu/stackInsights/spark/posts_xml_parq.py"
@@ -55,7 +55,7 @@ cmd_posts_pr = "ssh ubuntu@ip-10-0-0-13 /usr/local/spark/bin/spark-submit \
    --master spark://ip-10-0-0-13:7077 \
    --deploy-mode cluster \
    --executor-memory 20G \
-   --driver-memory 8G
+   --driver-memory 8G \
    --total-executor-cores 6 \
    --jars postgresql-9.4.1207.jar,aws-java-sdk-1.7.4.jar,hadoop-aws-2.7.3.jar \
    /home/ubuntu/stackInsights/spark/links_xml_parq.py"
@@ -73,7 +73,7 @@ cmd_pr_spark = "ssh ubuntu@ip-10-0-0-13 /usr/local/spark/bin/spark-submit \
    --master spark://ip-10-0-0-13:7077 \
    --deploy-mode cluster \
    --executor-memory 20G \
-   --driver-memory 8G
+   --driver-memory 8G \
    --total-executor-cores 6 \
    --jars postgresql-9.4.1207.jar,aws-java-sdk-1.7.4.jar,hadoop-aws-2.7.3.jar \
    --packages graphframes:graphframes:0.5.0-spark2.1-s_2.1
@@ -90,7 +90,7 @@ cmd_df_join = "ssh ubuntu@ip-10-0-0-13 /usr/local/spark/bin/spark-submit \
    --master spark://ip-10-0-0-13:7077 \
    --deploy-mode cluster \
    --executor-memory 20G \
-   --driver-memory 8G
+   --driver-memory 8G \
    --total-executor-cores 6 \
    --jars postgresql-9.4.1207.jar,aws-java-sdk-1.7.4.jar,hadoop-aws-2.7.3.jar \
    /home/ubuntu/stackInsights/spark/df_join.py"
