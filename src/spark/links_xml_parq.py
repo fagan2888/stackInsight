@@ -26,10 +26,10 @@ def file_names_retrieve():
           links_file_names.append(file_name)
     return links_file_names
 
-xml_files = file_names_retrieve()
+link_files = file_names_retrieve()
 
-links_files = []
 
+parquet_files = ["s3a://xmlsefiles/" + link_file for link_file in link_files ]
 for link_file in range(link_files):
     
     tdf = spark.read.text(kb_list_full[gz_file_id]).where(col('value').like('%<row Id%')) \
