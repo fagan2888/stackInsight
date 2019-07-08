@@ -3,7 +3,7 @@ import subprocess
 import csv
 
 bucket_name = "sedatadump"
-destination_bucket_name = "segzdump"
+destination_bucket_name = "xmlsefiles"
 
 #python script to download the .7z files from s3 and convert them to xml files
 file_path='/home/ubuntu/urls_subset_list.csv'
