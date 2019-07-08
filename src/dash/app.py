@@ -1,14 +1,14 @@
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
-import socket
+
 import psycopg2
 import pandas as pd
 from dash.dependencies import Input, Output, State
 import pandas as pd
-host = socket.gethostbyname(socket.gethostname())
+
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
-conn = psycopg2.connect(host= "",dbname= "ls", user= "postgres", password="***")
+conn = psycopg2.connect(host= "ec2-3-214-216-152.compute-1.amazonaws.com",dbname= "ls", user= "postgres", password="")
 cur = conn.cursor()
 
 def load_data(query):
@@ -22,7 +22,7 @@ def load_data(query):
     print(data1.shape)
     return (data1)
 
-comm_query="SELECT DISTINCT(community) FROM qtable;"
+comm_query="SELECT DISTINCT(community) FROM questions;"
 community = load_data(comm_query)
 
 print(community.head())
@@ -105,17 +105,17 @@ app.css.append_css({
                State('input-2-state', 'value')])
 def update_figure(n_clicks, input1, input2):
     
-    query1 = "SELECT COUNT(*) AS num_ques,date_trunc('month',create_date) AS q_month FROM qtable WHERE tags @> '{" + str(input2)  +"}'::varchar[] AND community='" + str(input1) +"' GROUP BY q_month ORDER BY q_month;"
+    query1 = "SELECT COUNT(*) AS num_ques,date_trunc('month',create_date) AS q_month FROM questions WHERE tags @> '{" + str(input2)  +"}'::varchar[] AND community='" + str(input1) +"' GROUP BY q_month ORDER BY q_month;"
     query_output1 = load_data(query1)
 
-    query2 = "SELECT  AVG(CAST(duration/14400 as decimal)) AS dur_days ,date_trunc('month',create_date) AS q_month FROM qtable WHERE tags @> '{" + str(input2)  +"}'::varchar[] AND community='" + str(input1) +"'AND duration > 0 GROUP BY q_month ORDER BY q_month;"
+    query2 = "SELECT  AVG(CAST(duration/14400 as decimal)) AS dur_days ,date_trunc('month',create_date) AS q_month FROM questions WHERE tags @> '{" + str(input2)  +"}'::varchar[] AND community='" + str(input1) +"'AND duration > 0 GROUP BY q_month ORDER BY q_month;"
     query_output2 = load_data(query2)
 
-    query3 = "SELECT cast(cast(COUNT(duration) as decimal) / COUNT(*)*100 as integer) AS prop,date_trunc('month',create_date) AS q_month  FROM qtable WHERE tags @> '{" + str(input2)  + "}'::varchar[] AND community='" + str(input1) +"' GROUP BY q_month ORDER BY q_month;"
+    query3 = "SELECT cast(cast(COUNT(duration) as decimal) / COUNT(*)*100 as integer) AS prop,date_trunc('month',create_date) AS q_month  FROM questions WHERE tags @> '{" + str(input2)  + "}'::varchar[] AND community='" + str(input1) +"' GROUP BY q_month ORDER BY q_month;"
     query_output3 = load_data(query3)
 
 
-    query4 = "SELECT tags,popularity,create_date FROM credtab WHERE tags @> '{" + str(input2)  + "}'::varchar[] AND COMMUNITY='" + str(input1) + "' ORDER BY create_date;"
+    query4 = "SELECT AVG(pr_score) AS popularity,create_date FROM questions WHERE tags @> '{" + str(input2)  + "}'::varchar[] AND COMMUNITY='" + str(input1) + "' GROUP BY create_date ORDER BY create_date;"
     query_output4 = load_data(query4)
 
     return [{'data': [{'x': query_output1['q_month'],'y': query_output1['num_ques']}],'layout': { 'xaxis':{ 'title':'Days' }, 'yaxis':{ 'title':'Number of Questions' } }},{'data': [{'x': query_output2['q_month'],'y': query_output2['dur_days']}],'layout': { 'xaxis':{ 'title':'Days' }, 'yaxis':{ 'title':'Response Time in Days' }} }, {'data': [{'x': query_output3['q_month'],'y': query_output3['prop']}],'layout': { 'xaxis':{ 'title':'Days' }, 'yaxis':{ 'title':'Proportion of Questions With Accepted Answers' }} },{'data': [{'x': query_output4['create_date'],'y': query_output4['popularity']}],'layout': { 'xaxis':{ 'title':'Days' }, 'yaxis':{ 'title':'Popularity of Page' }} } ]
@@ -127,4 +127,4 @@ def update_figure(n_clicks, input1, input2):
 #        and Input 2 is ""
 #    '''.format(n_clicks, input1)
 if __name__ == '__main__':
-    app.run_server(debug=True,host=host,port=8080)
+    app.run_server(debug=True,host="0.0.0.0")
