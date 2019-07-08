@@ -107,7 +107,8 @@ app.css.append_css({
                State('input-2-state', 'value')])
 def update_figure(n_clicks, input1, input2):
     
-    query1 = "SELECT COUNT(DISTINCT(qid)) AS num_ques,date_trunc('month',create_date) AS q_month FROM questions WHERE tags @> '{" + str(input2)  +"}'::varchar[] AND community='" + str(input1) +"' GROUP BY q_month ORDER BY q_month;"
+    query1 = "SELECT Count(DISTINCT(qid, date_trunc('month',create_date)))),date_trunc('month',create_date) AS q_month
+ FROM questions WHERE tags @> '{" + str(input2)  +"}'::varchar[] AND community='" + str(input1) +"' GROUP BY q_month ORDER BY q_month;"
     query_output1 = load_data(query1)
 
     query2 = "SELECT  AVG(CAST(duration/14400 as decimal)) AS dur_days ,date_trunc('month',create_date) AS q_month FROM questions WHERE tags @> '{" + str(input2)  +"}'::varchar[] AND community='" + str(input1) +"'AND duration > 0 GROUP BY q_month ORDER BY q_month;"
