@@ -8,10 +8,12 @@ from dash.dependencies import Input, Output, State
 import pandas as pd
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
-conn = psycopg2.connect(host= "ec2-3-214-216-152.compute-1.amazonaws.com",dbname= "ls", user= "postgres", password="")
-cur = conn.cursor()
+
 
 def load_data(query):
+    
+    conn = psycopg2.connect(host= "ec2-3-214-216-152.compute-1.amazonaws.com",dbname= "ls", user= "postgres", password="")
+    cur = conn.cursor()
 
     sql_command = (query)
     print (sql_command)
@@ -105,7 +107,7 @@ app.css.append_css({
                State('input-2-state', 'value')])
 def update_figure(n_clicks, input1, input2):
     
-    query1 = "SELECT COUNT(*) AS num_ques,date_trunc('month',create_date) AS q_month FROM questions WHERE tags @> '{" + str(input2)  +"}'::varchar[] AND community='" + str(input1) +"' GROUP BY q_month ORDER BY q_month;"
+    query1 = "SELECT COUNT(DISTINCT(qid)) AS num_ques,date_trunc('month',create_date) AS q_month FROM questions WHERE tags @> '{" + str(input2)  +"}'::varchar[] AND community='" + str(input1) +"' GROUP BY q_month ORDER BY q_month;"
     query_output1 = load_data(query1)
 
     query2 = "SELECT  AVG(CAST(duration/14400 as decimal)) AS dur_days ,date_trunc('month',create_date) AS q_month FROM questions WHERE tags @> '{" + str(input2)  +"}'::varchar[] AND community='" + str(input1) +"'AND duration > 0 GROUP BY q_month ORDER BY q_month;"
