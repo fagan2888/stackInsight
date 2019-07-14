@@ -5,8 +5,10 @@ echo $url
 
 echo "Unzipping the 7z file"
 file_name=$(echo $url | rev | cut -d '/' -f 1 | rev)
-just_file_name=$(echo $file_name | rev | cut -d '.' -f2- | cut -d '-' -f2- | rev)
-file_type=$(echo $file_name | rev | cut -d '.' -f1 | rev)
+#just_file_name=$(echo $file_name | rev | cut -d '.' -f2- | cut -d '-' -f2- | rev)
+file_type=$(echo $file_name | rev | cut -d '-' -f-1 | rev)
+
+echo $file_type
 echo $file_name
 7za e $file_name
 
@@ -15,42 +17,42 @@ echo "rename xml files"
 
 if [ "$file_type" == "Votes.7z" ]
 then 
-    mv Votes.xml "votes$just_file_name.xml"
+    mv Votes.xml "votesstackoverflow.com.xml"
 fi
 
 if [ "$file_type" == "Badges.7z" ]
 then 
-    mv Badges.xml "badges$just_file_name.xml"
+    mv Badges.xml "badgesstackoverflow.com.xml"
 fi
 
 if [ "$file_type" == "Tags.7z" ]
 then 
-    mv Badges.xml "tags$just_file_name.xml"
+    mv Badges.xml "tagsstackoverflow.com.xml"
 fi
 
 if [ "$file_type" == "Users.7z" ]
 then 
-    mv Users.xml "users$just_file_name.xml"
+    mv Users.xml "usersstackoverflow.com.xml"
 fi
 
 if [ "$file_type" == "Posts.7z" ]
 then 
-    mv Posts.xml "postss$just_file_name.xml"
+    mv Posts.xml "postsstackoverflow.com.xml"
 fi
 
 if [ "$file_type" == "PostLinks.7z" ]
 then 
-    mv PostLinks.xml "links$just_file_name.xml"
+    mv PostLinks.xml "linksstackoverflow.com.xml"
 fi
 
 if [ "$file_type" == "PostHistory.7z" ]
 then 
-    mv PostLinks.xml "phist$just_file_name.xml"
+    mv PostHistory.xml "phiststackoverflow.com.xml"
 fi
 
 if [ "$file_type" == "Comments.7z" ]
 then 
-    mv Comments.xml "comments$just_file_name.xml"
+    mv Comments.xml "commentsstackoverflow.com.xml"
 fi
 
 echo "rename complete"
