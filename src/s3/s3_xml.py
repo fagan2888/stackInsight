@@ -5,7 +5,7 @@ import csv
 if __name__ == "__main__":
   bucket_name = "sedatadump"
   destination_bucket_name = "xmlsefiles"
-  file_path='/home/ubuntu/urls.txt'
+  file_path='/home/ubuntu/urls_list.txt'
   urls_list = []
   with open(file_path, "r") as ins:
       for line in ins:
