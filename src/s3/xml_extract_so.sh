@@ -27,7 +27,7 @@ fi
 
 if [ "$file_type" == "Tags.7z" ]
 then 
-    mv Badges.xml "tagsstackoverflow.com.xml"
+    mv Tags.xml "tagsstackoverflow.com.xml"
 fi
 
 if [ "$file_type" == "Users.7z" ]
