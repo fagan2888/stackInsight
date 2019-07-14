@@ -15,6 +15,7 @@ if __name__ == "__main__":
       url_name= urls
       file_name= url_name.split("/")[-1]
       #download the file name from the s3 bucket
+      
       print('Stage 1: Pull data from S3 bucket')
       s3 = boto3.client('s3')
       s3.download_file(bucket_name,file_name,file_name)
@@ -33,6 +34,8 @@ if __name__ == "__main__":
             xml_file_name = "votesstackoverflow.com.xml"
          elif "Comments" in file_name:
             xml_file_name_so = "commentsstackoverflow.com.xml"
+         elif "Users" in file_name:
+            xml_file_name_so = "usersstackoverflow.com.xml"
          else:
             xml_file_name_so = "phiststackoverflow.com.xml"
          command = "/home/ubuntu/so.sh " + urls
