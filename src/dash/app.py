@@ -107,18 +107,17 @@ app.css.append_css({
                State('input-2-state', 'value')])
 def update_figure(n_clicks, input1, input2):
     
-    query1 = "SELECT Count(DISTINCT(qid, date_trunc('month',create_date)))),date_trunc('month',create_date) AS q_month
- FROM questions WHERE tags @> '{" + str(input2)  +"}'::varchar[] AND community='" + str(input1) +"' GROUP BY q_month ORDER BY q_month;"
+    query1 = "SELECT COUNT(*), date_trunc('month',create_date) AS q_month FROM (SELECT DISTINCT  ON(qid) create_date FROM questions WHERE tags @> '{" + str(input2)  +"}'::varchar[] AND COMMUNITY='" + str(input1) +"' ) AS temp GROUP BY q_month ORDER BY q_month;"
     query_output1 = load_data(query1)
 
-    query2 = "SELECT  AVG(CAST(duration/14400 as decimal)) AS dur_days ,date_trunc('month',create_date) AS q_month FROM questions WHERE tags @> '{" + str(input2)  +"}'::varchar[] AND community='" + str(input1) +"'AND duration > 0 GROUP BY q_month ORDER BY q_month;"
+    query2 = "SELECT AVG(CAST(duration/14400 as decimal)) AS dur_days , date_trunc('month',create_date) AS q_month FROM (SELECT DISTINCT  ON(qid) create_date, duration FROM questions WHERE tags @> '{" + str(input2)  +"}'::varchar[] AND COMMUNITY='" + str(input1) +"' ) AS temp GROUP BY q_month ORDER BY q_month;"
     query_output2 = load_data(query2)
 
-    query3 = "SELECT cast(cast(COUNT(duration) as decimal) / COUNT(*)*100 as integer) AS prop,date_trunc('month',create_date) AS q_month  FROM questions WHERE tags @> '{" + str(input2)  + "}'::varchar[] AND community='" + str(input1) +"' GROUP BY q_month ORDER BY q_month;"
+    query3 = "SELECT cast(cast(COUNT(duration) as decimal) / COUNT(*)*100 as integer) AS prop , date_trunc('month',create_date) AS q_month FROM (SELECT DISTINCT  ON(qid) create_date, duration FROM questions WHERE tags @> '{" + str(input2)  +"}'::varchar[] AND COMMUNITY='" + str(input1) +"' ) AS temp GROUP BY q_month ORDER BY q_month;"
     query_output3 = load_data(query3)
 
 
-    query4 = "SELECT AVG(pr_score) AS popularity,create_date FROM questions WHERE tags @> '{" + str(input2)  + "}'::varchar[] AND COMMUNITY='" + str(input1) + "' GROUP BY create_date ORDER BY create_date;"
+    query4 = "SELECT AVG(pr_score) AS popularity,date_trunc('month',create_date) AS q_month FROM questions WHERE tags @> '{" + str(input2)  +"}'::varchar[] AND COMMUNITY='" + str(input1) +"' GROUP BY create_date ORDER BY q_month;"
     query_output4 = load_data(query4)
 
     return [{'data': [{'x': query_output1['q_month'],'y': query_output1['num_ques']}],'layout': { 'xaxis':{ 'title':'Days' }, 'yaxis':{ 'title':'Number of Questions' } }},{'data': [{'x': query_output2['q_month'],'y': query_output2['dur_days']}],'layout': { 'xaxis':{ 'title':'Days' }, 'yaxis':{ 'title':'Response Time in Days' }} }, {'data': [{'x': query_output3['q_month'],'y': query_output3['prop']}],'layout': { 'xaxis':{ 'title':'Days' }, 'yaxis':{ 'title':'Proportion of Questions With Accepted Answers' }} },{'data': [{'x': query_output4['create_date'],'y': query_output4['popularity']}],'layout': { 'xaxis':{ 'title':'Days' }, 'yaxis':{ 'title':'Popularity of Page' }} } ]
