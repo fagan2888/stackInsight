@@ -1,19 +1,18 @@
 #!/bin/bash
 
-# This script is used to redirect the archives in the urls of the csv file to the amazon s3 bucket
+# This script is used to redirect the archives in the urls of the txt file to the amazon s3 bucket
 
-input=$HOME'/urls_subset_list.csv'
+input=$HOME'/urls_list.txt'
 echo $input
 while read url
 do
-    
 
-    echo $url
+    the_url=""${url}""
+    echo $the_url
     echo "Transferring to S3"
     file_name=$(echo $url | rev | cut -d '/' -f 1 | rev)
     echo $file_name
-    wget -qO- $url | aws s3 cp - s3://sedatadump/$file_name
+    wget -qO- $the_url | aws s3 cp - s3://attest/$file_name
 
-    echo "Transfer Complete"
+    #echo "Transfer Complete"
 done < "$input"
-
