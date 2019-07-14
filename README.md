@@ -33,4 +33,4 @@ For a given online community and a set of tags entered by a user, the dashboard 
 
 
 ## Dashboard
-![diagram](fig/db.png)
+![diagram](fig/db_screenshot.png)
