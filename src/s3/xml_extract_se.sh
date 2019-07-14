@@ -1,7 +1,6 @@
 #!/bin/bash
 
-# This script is used to convert the .7z files to gz files
-
+# This script is used to extract the xml files out of the .7z files
 url=$1
 
 echo $url
