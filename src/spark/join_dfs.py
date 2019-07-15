@@ -26,11 +26,11 @@ if __name__ == "__main__":
   #filter the answers in another dataframe
   answers = df3.filter((f.col('PostTypeId')==2))
   #rename the answer dataframe columns
-  answers_subset = answers.select("Id","CreationDate")
-  new_names = ['AnsId', 'AnsCreationDate']
+  answers_subset = answers.select("Id","CreationDate","Community")
+  new_names = ['AnsId', 'AnsCreationDate','AnsCommunity']
   answers_subset = answers_subset.toDF(*new_names)
   #perform a join on the questions df and the answer df based on the common answer id
-  qa_deets = questions_subset.join(answers_subset,questions_subset.AcceptedAnswerId == answers_subset.AnsId)
+  qa_deets = questions_subset.join(answers_subset,(answers_subset.AnsCommunity == all_questions.Community) & (questions_subset.AcceptedAnswerId == answers_subset.AnsId))
  
   timeFmt = "yyyy-MM-dd' 'HH:mm:ss.SSS"
   timeDiff = (f.unix_timestamp('AnsCreationDate', format=timeFmt)
