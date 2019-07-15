@@ -1,5 +1,5 @@
 # !/bin/bash
-cd /home/ubuntu/stackInsight/src/spark;
+
 export PYSPARK_PYTHON=python3;
 /usr/local/spark/bin/spark-submit \
    --master spark://ip-10-0-0-13:7077 \
