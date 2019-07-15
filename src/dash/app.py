@@ -7,13 +7,14 @@ import psycopg2
 import pandas as pd
 from dash.dependencies import Input, Output, State
 import pandas as pd
+from config.config import *
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 #conn = psycopg2.connect(host= "ec2-3-214-216-152.compute-1.amazonaws.com",dbname= "ls", user= "postgres", password="thete456")
 #cur = conn.cursor()
 
 def load_data(query):
-    conn = psycopg2.connect(host= "ec2-3-214-216-152.compute-1.amazonaws.com",dbname= "ls", user= "postgres", password="thete456")
+    conn = psycopg2.connect(host= "ec2-3-214-216-152.compute-1.amazonaws.com",dbname= "ls", user= "postgres", password="***")
     cur = conn.cursor()
     sql_command = (query)
     print (sql_command)
