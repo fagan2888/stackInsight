@@ -6,7 +6,7 @@ import os
 
 
 
-srcDir = '/home/ubuntu/stackInsights/s3'
+srcDir = '/home/ubuntu/stackInsight/s3'
 default_args = {
     'owner': 'airflow',
     'depends_on_past': False,
