@@ -20,6 +20,7 @@ This would be useful in the following ways:
 
 ## 2. Pipeline
 ![diagram](fig/pipeline.png)
+__Figure 1.__ Pipeline depicting the flow of data.
 
 ## 3. Requirements
 - Python3
@@ -82,6 +83,7 @@ For example, Posts.xml of the askubuntu community is stored as postsaskubuntu.co
 Datbricks Supported XML    | Databricks non-supported xml
 :-------------------------:|:-------------------------:
 ![diagram](fig/xml_parse.png)  |  ![diagram](fig/se_xml.png)
+__Figure 2.__ XML file variations to bring out the necessity of parquet conversion.
 
 In order to extract the attributes of the tags of the xml files , I converted the xml files to parquet due to the limitations of the DataBricks xml parser library which requires the attribute to be embedded between pairs of tags as opposed to all atrributes within a single pair of tags. 
 
@@ -106,8 +108,33 @@ The PageRank algorithm holds that an imaginary surfer who is randomly clicking o
 ### Calculation of Response Time
 
 
+
+1. The posts.parquet files are read in as a dataframe.
+
+2. The questions are stored in a separate dataframe
+
+   `questions = posts.filter((f.col('PostTypeId')==1)).filter((f.col('AcceptedAnswerId').isNotNull()))`
+
+3. The answers are stored in a separate dataframe
+
+   `answers = df3.filter((f.col('PostTypeId')==2))`
+  
+![diagram](fig/rt.png)
+__Figure 3.__ Visualizing the join of the questions and the answers dataframe based on the common community name and the acceptedAnswerId of the question dataframe and the answer id of the answer dataframe.
+
+4. Post the join the response time to the question is calculated by subtracting the timestamps of the question and the answers.
+
+`qa_deets = questions_subset.join(answers_subset,(answers_subset.AnsCommunity == all_questions.Community) & (questions_subset.AcceptedAnswerId == answers_subset.AnsId))`
+
+5. A union is then performed with the rest of the questions which dont have and accepted answer ID
+ 
 ### Dataframe Join and Output to PostgreSQL
+
+` cred_tags = all_questions.join(broadcast(links), (links.id == all_questions.COMMUNITY_QUESTION_ID) & (all_questions_subset.Community == links.lcommunity), "left_outer")`
+
+A left outer join is performed by broadcasting the links table to all the workers so that the pagerank score and the response time of the different questions can be accessed in a single row.
 
 
 ## 8. Dashboard
 ![diagram](fig/db_screenshot.png)
+__Figure 4.__ Dashboard showing a comparative analysis of the metrics associated with different technologies.
