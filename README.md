@@ -31,7 +31,7 @@ __Figure 1.__ Pipeline depicting the flow of data.
 
 ### Spark
 
-4 EC2 m5ad.xlarge instances (1 master 3 slaves spark cluster)
+4 EC2 m5ad.2xlarge instances (1 master 3 slaves spark cluster)
 
 [Installation](https://blog.insightdatascience.com/simply-install-spark-cluster-mode-341843a52b88)
 
