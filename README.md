@@ -1,5 +1,7 @@
 # stackInsight
 Insight Data Engineering Project New York 2019B Session
+| ->  [Demo](https://www.datalit.info)        |                ->  [Slides](https://docs.google.com/presentation/d/1Vxph2p5KekOKe9e2O7LTa55-IDVIYwcrO0I3Z2CUGKI/edit?usp=sharing)           |
+| ------------- |:-------------:|
 
 ## 1.Overview
 The stackexchange network has over 170 QnA communites dedicated to answering questions about a variety of topics for people all over the world from different backgrounds. With so many questions being asked across different topics, it would certainly be interesting to see which topics have the most active users.
@@ -19,12 +21,13 @@ This would be useful in the following ways:
 ## 3. Requirements
 - Python3
 - [AWS CLI](https://aws.amazon.com/cli/)
-
+- [boto3](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/quickstart.html#installation)
 ## Architechture:
 
 ### Spark:
 
 4 EC2 m5ad.xlarge instances (1 master 3 slaves spark cluster)
+
 [Installation](https://blog.insightdatascience.com/simply-install-spark-cluster-mode-341843a52b88)
 
 ### Airflow:
