@@ -1,7 +1,10 @@
 # stackInsight
 Insight Data Engineering Project New York 2019B Session
+
 | ->  [Demo](https://www.datalit.info)        |                ->  [Slides](https://docs.google.com/presentation/d/1Vxph2p5KekOKe9e2O7LTa55-IDVIYwcrO0I3Z2CUGKI/edit?usp=sharing)           |
 | ------------- |:-------------:|
+
+
 
 ## 1.Overview
 The stackexchange network has over 170 QnA communites dedicated to answering questions about a variety of topics for people all over the world from different backgrounds. With so many questions being asked across different topics, it would certainly be interesting to see which topics have the most active users.
