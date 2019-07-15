@@ -48,7 +48,7 @@ posts_p = BashOperator(
      task_id='posts-parquet-sparks',
      bash_command=cmd_posts_pr
      dag=dag)
-loaddatatobucket.set_downstream(filesconversion)
+posts_p.set_downstream(filesconversion)
 
 
 cmd_posts_pr = "ssh ubuntu@10.0.0.13 /usr/local/spark/bin/spark-submit \
@@ -65,7 +65,7 @@ links_p = BashOperator(
      task_id='links-parquet-sparks',
      bash_command=cmd_links_pr
      dag=dag)
-loaddatatobucket.set_downstream(posts_p)
+links_p.set_downstream(posts_p)
 
 
 
@@ -83,7 +83,7 @@ pr_calculation = BashOperator(
      task_id='page-rank-sparks',
      bash_command=cmd_pr_spark
      dag=dag)
-loaddatatobucket.set_downstream(links_p)  
+pr_calculation.set_downstream(links_p)  
    
 
 cmd_df_join = "ssh ubuntu@10.0.0.13 /usr/local/spark/bin/spark-submit \
@@ -98,5 +98,5 @@ df_join_spark = BashOperator(
      task_id='join-spark-df',
      bash_command=cmd_df_join
      dag=dag)
-loaddatatobucket.set_downstream(pr_calculation)
+df_join_spark.set_downstream(pr_calculation)
 
