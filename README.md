@@ -1,7 +1,7 @@
 # stackInsight
 Insight Data Engineering Project New York 2019B Session
 
-## Motivation
+## 1.Overview
 The stackexchange network has over 170 QnA communites dedicated to answering questions about a variety of topics for people all over the world from different backgrounds. With so many questions being asked across different topics, it would certainly be interesting to see which topics have the most active users.
 This would be useful in the following ways:
 * Identify pages which topics have a low response time
@@ -13,25 +13,33 @@ This would be useful in the following ways:
 * Can be used by small startups which has launched a new product to monitor how their tech is performing in the community.
 
 
-## Pipeline
+## 2. Pipeline
 ![diagram](fig/pipeline.png)
+
+## 3. Requirements
+- Python3
+- [AWS CLI](https://aws.amazon.com/cli/)
 
 ## Architechture:
 
 ### Spark:
 
 4 EC2 m5ad.xlarge instances (1 master 3 slaves spark cluster)
+[Installation](https://blog.insightdatascience.com/simply-install-spark-cluster-mode-341843a52b88)
 
 ### Airflow:
 
 1 EC2 m5ad.xlarge instance
+[Installation](https://blog.insightdatascience.com/scheduling-spark-jobs-with-airflow-4c66f3144660)
 
 ### PostgreSQL:
 
 1 EC2 m5ad.xlarge instance
+[Installation](https://blog.insightdatascience.com/simply-install-postgresql-58c1e4ebf252)
 
 ### Dash
 1 EC2 m5ad.large instance
+[Installation](https://dash.plot.ly/installation)
 
 ## DataSet
 StackExchange data dump from the online internet archive [Link](https://archive.org/download/stackexchange) 
