@@ -30,15 +30,18 @@ This would be useful in the following ways:
 ### Airflow:
 
 1 EC2 m5ad.xlarge instance
+
 [Installation](https://blog.insightdatascience.com/scheduling-spark-jobs-with-airflow-4c66f3144660)
 
 ### PostgreSQL:
 
 1 EC2 m5ad.xlarge instance
+
 [Installation](https://blog.insightdatascience.com/simply-install-postgresql-58c1e4ebf252)
 
 ### Dash
 1 EC2 m5ad.large instance
+
 [Installation](https://dash.plot.ly/installation)
 
 ## DataSet
