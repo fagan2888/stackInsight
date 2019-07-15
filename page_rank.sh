@@ -7,4 +7,5 @@ export PYSPARK_PYTHON=python3;
    --executor-memory 20G \
    --total-executor-cores 4 \
    --jars postgresql-9.4.1207.jar,aws-java-sdk-1.7.4.jar,hadoop-aws-2.7.3.jar \
+   --packages graphframes:graphframes:0.5.0-spark2.1-s_2.1 \
    /home/ubuntu/stackInsights/spark/pagerank_calculation.py
