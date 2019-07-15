@@ -9,8 +9,9 @@ import boto3
 
 """spark script to read the posts .xml files of different stack exchange communities and convert them to parquet. """
 def read_tags_raw(tags_string): # converts <tag1><tag2> to ['tag1', 'tag2']
-       return html.unescape(tags_string).strip('>').strip('<').split('><') if tags_string else []
-if __name__ == "__main__":
+    return html.unescape(tags_string).strip('>').strip('<').split('><') if tags_string else []
+
+def main():
    sc = SparkContext(conf=SparkConf().setAppName("se"))
    spark = SparkSession.builder.appName("se").getOrCreate()
    pattern = re.compile(' ([A-Za-z]+)="([^"]*)"')
@@ -69,3 +70,8 @@ if __name__ == "__main__":
    community_posts = posts_udf_id.join(clean_name_df_subset_id, posts_udf_id.iid == clean_name_df_subset_id.iid).drop("iid")
    community_posts.write.parquet("s3a://xmlparq/posts.parquet")
    spark.catalog.clearCache()
+     
+       
+if __name__ == "__main__":
+   main()
+   
