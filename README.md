@@ -171,6 +171,11 @@ Post installation of all the components of the pipeline, it can be used in two w
 
 `./df_join.sh`
 
+#### 2.4 DataFrame Join
+
+`cd $HOME/stackInsight/src/dash`
+
+`python app.py`
 
 
   
