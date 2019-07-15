@@ -25,7 +25,8 @@ This would be useful in the following ways:
 - Python3
 - [AWS CLI](https://aws.amazon.com/cli/)
 - [boto3](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/quickstart.html#installation)
-## Architechture:
+
+## 4. Architechture:
 
 ### Spark:
 
