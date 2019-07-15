@@ -24,7 +24,7 @@ downloadData= BashOperator(
     dag=dag)
 loaddatatobucket = BashOperator(
     task_id='load-zip-files',
-    bash_command=   srcDir + 'transfer.sh ' ,
+    bash_command=   srcDir + 'transfer_to_s3.sh ' ,
     dag=dag)
 
 downloadData.set_downstream(loaddatatobucket)
