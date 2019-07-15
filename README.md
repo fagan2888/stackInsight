@@ -146,8 +146,10 @@ __Figure 4.__ Dashboard showing a comparative analysis of the metrics associated
 
 Post installation of all the components of the pipeline, it can be used in two ways:
 ### 1. Initialize the Dag in Airflow and launch it on airflow scheduler:
-` cp /home/ubuntu/stackInsight/src/airflow/de_dag.py /home/ubuntu/airflow/de_dag.py
-  python de_dag.py`
+
+` cp /home/ubuntu/stackInsight/src/airflow/de_dag.py /home/ubuntu/airflow/de_dag.py`
+ 
+` python de_dag.py`
   
 ### 2. Run the following scripts:
 
@@ -158,6 +160,7 @@ Post installation of all the components of the pipeline, it can be used in two w
 #### 2.2 Parquet Conversion
 
 `./run_posts_parq.sh`
+
 `./run_links_parq.sh`
 
 #### 2.3 PageRank Calculation
