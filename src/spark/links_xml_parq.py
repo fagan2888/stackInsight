@@ -16,8 +16,8 @@ def file_names_retrieve():
        if "links" in file_name:
           links_file_names.append(file_name)
     return links_file_names
-#set up a spark session:
-if __name__ == "__main__":
+
+def main():
   sc = SparkContext(conf=SparkConf().setAppName("se"))
   spark = SparkSession.builder.appName("se").getOrCreate()
   #preprocessing functions:
@@ -44,3 +44,11 @@ if __name__ == "__main__":
   community_links = tdf_id.join(fdf_id, tdf_id.iid == fdf_id.iid).drop("iid")
   community_links.write.parquet('s3a://xmlparq/links.parquet')
   spark.catalog.clearCache()
+  
+    
+#set up a spark session:
+if __name__ == "__main__":
+  
+  main()
+  
+  
