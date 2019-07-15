@@ -9,9 +9,11 @@ from dash.dependencies import Input, Output, State
 import pandas as pd
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+#conn = psycopg2.connect(host= "ec2-3-214-216-152.compute-1.amazonaws.com",dbname= "ls", user= "postgres", password="thete456")
+#cur = conn.cursor()
 
 def load_data(query):
-    conn = psycopg2.connect(host= "amazon-ec2-host",dbname= "ls", user= "postgres", password="passwd")
+    conn = psycopg2.connect(host= "ec2-3-214-216-152.compute-1.amazonaws.com",dbname= "ls", user= "postgres", password="thete456")
     cur = conn.cursor()
     sql_command = (query)
     print (sql_command)
@@ -101,10 +103,15 @@ app.css.append_css({
     'external_url': 'https://codepen.io/chriddyp/pen/bWLwgP.css'
 })
 
+#@app.callback(Output('output-state', 'children'),
+#              [Input('submit-button', 'n_clicks')],
+#              [State('input-1-state', 'value')])
 @app.callback([Output('g1','figure'),
                Output('g2','figure'),
                Output('g3','figure'),
-               Output('g4','figure')],
+               Output('g4','figure'),
+               Output(component_id='output1', component_property='children'),
+               Output(component_id='output2', component_property='children')],
               [Input('submit-button', 'n_clicks')],
               [State('input-1-state', 'value'),
                State('input-2-state', 'value'),
@@ -137,8 +144,27 @@ def update_figure(n_clicks, input1, input2, input3):
 
     query8 = "SELECT AVG(pr_score) AS popularity,date_trunc('month',create_date) AS q_month FROM questions WHERE tags @> '{" + str(input3)  +"}'::varchar[] AND COMMUNITY='" + str(input1) +"' GROUP BY q_month ORDER BY q_month;"
     query_output8 = load_data(query8)
-    return [{'data': [{'x': query_output1['q_month'],'y': query_output1['num_ques'], 'name': input2},{'x': query_output5['q_month'],'y': query_output5['num_ques'],'name': input3}],'layout': { 'xaxis':{ 'title':'Days' }, 'yaxis':{ 'title':'Number of Questions' } }},{'data': [{'x': query_output2['q_month'],'y': query_output2['dur_days'],'name': input2},{'x': query_output6['q_month'],'y': query_output6['dur_days'],'name': input3}],'layout': { 'xaxis':{ 'title':'Days' }, 'yaxis':{ 'title':'Response Time in Days' }} }, {'data': [{'x': query_output3['q_month'],'y': query_output3['prop'],'name': input2},{'x': query_output7['q_month'],'y': query_output7['prop'],'name': input3}],'layout': { 'xaxis':{ 'title':'Days' }, 'yaxis':{ 'title':'Proportion of Questions With Accepted Answers' }} },{'data': [{'x': query_output4['q_month'],'y': query_output4['popularity'],'name': input2},{'x': query_output8['q_month'],'y': query_output8['popularity'],'name': input3}],'layout': { 'xaxis':{ 'title':'Days' }, 'yaxis':{ 'title':'Popularity of Page' }} } ]
 
+
+    query9 = "with elements (element) as (SELECT DISTINCT  ON(qid) unnest(tags) FROM questions WHERE tags @> '{" + str(input2)  + "}'::varchar[] AND COMMUNITY='" + str(input1) + "') SELECT COUNT(*) as count_with,element FROM elements GROUP BY element ORDER BY count_with DESC LIMIT 7;"
+    query_output9 = load_data(query9)
+
+
+    query10 = "with elements (element) as (SELECT DISTINCT  ON(qid) unnest(tags) FROM questions WHERE tags @> '{" + str(input3)  + "}'::varchar[] AND COMMUNITY='" + str(input1) + "') SELECT COUNT(*) as count_with,element FROM elements GROUP BY element ORDER BY count_with DESC LIMIT 7;"
+    query_output10 = load_data(query10)
+
+
+    return [{'data': [{'x': query_output1['q_month'],'y': query_output1['num_ques'], 'name': input2},{'x': query_output5['q_month'],'y': query_output5['num_ques'],'name': input3}],'layout': { 'xaxis':{ 'title':'Days' }, 'yaxis':{ 'title':'Number of Questions' } }},\
+{'data': [{'x': query_output2['q_month'],'y': query_output2['dur_days'],'name': input2},{'x': query_output6['q_month'],'y': query_output6['dur_days'],'name': input3}],'layout': { 'xaxis':{ 'title':'Days' }, 'yaxis':{ 'title':'Response Time in Days' }} }, \
+{'data': [{'x': query_output3['q_month'],'y': query_output3['prop'],'name': input2},{'x': query_output7['q_month'],'y': query_output7['prop'],'name': input3}],'layout': { 'xaxis':{ 'title':'Days' }, 'yaxis':{ 'title':'Proportion of Questions With Accepted Answers' }} },\
+{'data': [{'x': query_output4['q_month'],'y': query_output4['popularity'],'name': input2},{'x': query_output8['q_month'],'y': query_output8['popularity'],'name': input3}],'layout': { 'xaxis':{ 'title':'Days' }, 'yaxis':{ 'title':'Popularity of Page' }} },\
+'Frequently occurs with :- ' + ', '.join(query_output9.element.tolist()[2:]),\
+'Frequently occurs with :- ' + ', '.join(query_output10.element.tolist()[2:]) ]
+#def update_output(n_clicks, input1):
+#    return u'''
+#        The Button has been pressed {} times,
+#        Input 1 is "{}",
+#        and Input 2 is ""
+#    '''.format(n_clicks, input1)
 if __name__ == '__main__':
     app.run_server(debug=True,host="0.0.0.0",port=8080)
-
