@@ -83,6 +83,8 @@ For example, Posts.xml of the askubuntu community is stored as postsaskubuntu.co
 Datbricks Supported XML    | Databricks non-supported xml
 :-------------------------:|:-------------------------:
 ![diagram](fig/xml_parse.png)  |  ![diagram](fig/se_xml.png)
+
+
 __Figure 2.__ XML file variations to bring out the necessity of parquet conversion.
 
 In order to extract the attributes of the tags of the xml files , I converted the xml files to parquet due to the limitations of the DataBricks xml parser library which requires the attribute to be embedded between pairs of tags as opposed to all atrributes within a single pair of tags. 
@@ -99,7 +101,7 @@ PageRank works by counting the number and quality of links to a page to determin
 1. The links.parquet file is first read in as a dataframe. This dataframe is then partitioned on the basis of the community of the questions across the cluster. 
 2. Using the Spark's graphX library, the links dataframe is converted to a graphframe. Here the total number of vertices are identified as the number of distinct question ids within the community. Two vertices share an edge if the link from the page of one question points to that of another question. This relationship between various vertices is represented as a graphFrame in spark.
 
-`pr = graph_frame.pageRank(resetProbability=0.15, tol=0.01)`
+   `pr = graph_frame.pageRank(resetProbability=0.15, tol=0.01)`
 
 3. The above command calculates the pagerank score of each node using the default parameters of resetProbability and tolerance.
 The PageRank algorithm holds that an imaginary surfer who is randomly clicking on links will eventually stop clicking. The probability, at any step, that the person will continue is a damping factor. The damping factor can be be set by changing the resetProbability parameter. Here tol - the tolerance allowed at convergence (smaller => more accurate).
@@ -124,13 +126,13 @@ __Figure 3.__ Visualizing the join of the questions and the answers dataframe ba
 
 4. Post the join the response time to the question is calculated by subtracting the timestamps of the question and the answers.
 
-`qa_deets = questions_subset.join(answers_subset,(answers_subset.AnsCommunity == all_questions.Community) & (questions_subset.AcceptedAnswerId == answers_subset.AnsId))`
+  `qa_deets = questions_subset.join(answers_subset,(answers_subset.AnsCommunity == all_questions.Community) & (questions_subset.AcceptedAnswerId == answers_subset.AnsId))`
 
 5. A union is then performed with the rest of the questions which dont have and accepted answer ID
  
 ### Dataframe Join and Output to PostgreSQL
 
-` cred_tags = all_questions.join(broadcast(links), (links.id == all_questions.COMMUNITY_QUESTION_ID) & (all_questions_subset.Community == links.lcommunity), "left_outer")`
+ ` cred_tags = all_questions.join(broadcast(links), (links.id == all_questions.COMMUNITY_QUESTION_ID) & (all_questions_subset.Community == links.lcommunity), "left_outer")`
 
 A left outer join is performed by broadcasting the links table to all the workers so that the pagerank score and the response time of the different questions can be accessed in a single row.
 
