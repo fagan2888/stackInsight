@@ -138,5 +138,5 @@ A left outer join is performed by broadcasting the links table to all the worker
 
 
 ## 8. Dashboard
-![diagram](fig/db_screenshot.png)
-__Figure 4.__ Dashboard showing a comparative analysis of the metrics associated with different technologies.
+![diagram](fig/db_rec.png)
+__Figure 4.__ Dashboard showing a comparative analysis of the metrics associated with different technologies. It also shows the other tags frequently occuring with these tags
