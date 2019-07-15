@@ -31,7 +31,7 @@ __Figure 1.__ Pipeline depicting the flow of data.
 
 ### Spark
 
-4 EC2 m5ad.2xlarge instances (1 master 3 slaves spark cluster)
+4 EC2 m5ad.xlarge instances (1 master 3 slaves spark cluster)
 
 [Installation](https://blog.insightdatascience.com/simply-install-spark-cluster-mode-341843a52b88)
 
@@ -140,3 +140,34 @@ A left outer join is performed by broadcasting the links table to all the worker
 ## 8. Dashboard
 ![diagram](fig/db_rec.png)
 __Figure 4.__ Dashboard showing a comparative analysis of the metrics associated with different technologies. It also shows the other tags frequently occuring with these tags
+
+
+## 9. Getting Started
+
+Post installation of all the components of the pipeline, it can be used in two ways:
+### 1. Initialize the Dag in Airflow and launch it on airflow scheduler:
+` cp /home/ubuntu/stackInsight/src/airflow/de_dag.py /home/ubuntu/airflow/de_dag.py
+  python de_dag.py`
+  
+### 2. Run the following scripts:
+
+#### 2.1 Data Collection
+
+`./data_collection.sh`
+
+#### 2.2 Parquet Conversion
+
+`./run_posts_parq.sh`
+`./run_links_parq.sh`
+
+#### 2.3 PageRank Calculation
+
+`./page_rank.sh`
+
+#### 2.4 DataFrame Join
+
+`./df_join.sh`
+
+
+
+  
