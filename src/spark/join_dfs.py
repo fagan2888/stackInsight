@@ -12,8 +12,7 @@ This pyspark script performs the joins between the questions which has the respo
 the post(question) links which is then pushed to the postgresql database
 
 """
-
-if __name__ == "__main__":
+def main():
   sc = SparkContext(conf=SparkConf().setAppName("se"))
   spark = SparkSession.builder.appName("se").getOrCreate()
   #read in the links parquet file
@@ -63,5 +62,12 @@ if __name__ == "__main__":
   total_df  =  total_df.withColumnRenamed("Tags","tags")
   total_df  = total_df.withColumnRenamed("post_create_date","create_date")
   total_df_reqd = total_df.select("qid","tags","community","duration","create_date","pr_score")
-  total_df_reqd.write.format("jdbc").mode("append") .option("url", "jdbc:postgresql://hostname/ls?user=postgres&password=").option("dbtable", "questions").option("user", "postgres").option("password", "").save()
+  total_df_reqd.write.format("jdbc").mode("append") .option("url", "jdbc:postgresql://hostname/ls?user=xxx&password=xxx").option("dbtable", "questions").option("user", "postgres").option("password", "xxx").save()
   spark.catalog.clearCache()
+
+if __name__ == "__main__":
+  main()
+
+
+  
+  
