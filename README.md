@@ -106,6 +106,7 @@ PageRank works by counting the number and quality of links to a page to determin
 3. The above command calculates the pagerank score of each node using the default parameters of resetProbability and tolerance.
 The PageRank algorithm holds that an imaginary surfer who is randomly clicking on links will eventually stop clicking. The probability, at any step, that the person will continue is a damping factor. The damping factor can be be set by changing the resetProbability parameter. Here tol - the tolerance allowed at convergence (smaller => more accurate).
 
+Note: the calculated page rank values are unnormalized. Therefore , pages which have no incoming links will have the default value of 0.15.
 
 ### Calculation of Response Time
 
